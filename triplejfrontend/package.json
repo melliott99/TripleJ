@@ -19,6 +19,7 @@
     "eject": "react-scripts eject",
     "json": "json-server --watch db.json --port 4000",
     "all": "run-p start json"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -45,5 +46,6 @@
   },
   "msw": {
     "workerDirectory": "public"
+
   }
 }
