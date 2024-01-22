@@ -9,7 +9,7 @@ export default class Api {
     }
 
     static getSongs(){
-        const uri = API_BASE_ADDRESS + "/Songs"
+        const uri = API_BASE_ADDRESS + "/Song"
         return fetch(uri, {
             method: 'GET',
         });

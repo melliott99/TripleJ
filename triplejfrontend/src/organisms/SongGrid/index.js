@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { SongCard } from "molecules/SongCard"
+import Api from "api"
 
 
 const SongGrid = () => {
-    const SongArray = props.songs;
-    const [songs, setSongs] = useState([]);
+    const [SongArray, setSongs] = useState([]);
 
     useEffect(() => {
         Api.getSongs().then((response) => 
@@ -12,13 +12,18 @@ const SongGrid = () => {
         );
     }, [])
 
-    const SongList = SongArray.map((song, i) => 
-        <SongCard song={song.title} artist={song.artist} Year={song.year} albumArt={song.albumArt} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
-    );
+    // const renderSongArray = SongArray.map((song, i) => 
+    //     <div className='song-grid'>
+    //         <SongCard song={song.songName} artist={song.artist} albumArt={song.artUrl} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
+    //     </div>
+    // );
 
     return (
-        <div>
-            {SongList}
+        <div className='song-grid'>
+            {SongArray.map((song, i) => 
+                <SongCard song={song.songName} artist={song.artist} albumArt={song.artUrl} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
+            )}
+             {/* { renderSongArray} */}
         </div>
     );
 

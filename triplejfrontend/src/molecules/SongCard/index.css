@@ -6,6 +6,10 @@
     margin: 10px;
     border-radius: 8px;
   }
+
+  .song-card:hover {
+    transform: translateY(-5px);
+  }
   
   .album-art {
     width: 80px;

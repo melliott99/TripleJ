@@ -7,11 +7,6 @@ const App = () => {
             <SongGrid></SongGrid>
         </div>
     );
-
-    const handleAddButtonClick = () => {
-        console.log('add button')
-    }
-
 };
 
 
