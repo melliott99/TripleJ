@@ -1,0 +1,50 @@
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import './index.css'
+
+const SongCard = ({ song, artist, albumArt, onAddButtonClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  useEffect(() => {
+    // Additional side effects can be added here if needed
+    // For example, fetching additional data when the component mounts
+    // or cleaning up resources when the component unmounts
+    return () => {
+      // Cleanup code here (if needed)
+    };
+  }, []);
+
+  return (
+    <div
+      className={`song-card ${isHovered ? 'hovered' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <img src={albumArt} alt={`${song} - ${artist}`} className="album-art" />
+      <div className="song-info">
+        <h3 className="song-title">{song}</h3>
+        <p className="artist-name">{artist}</p>
+      </div>
+      <button onClick={onAddButtonClick} className="add-button">
+        +
+      </button>
+    </div>
+  );
+};
+
+SongCard.propTypes = {
+  song: PropTypes.string.isRequired,
+  artist: PropTypes.string.isRequired,
+  albumArt: PropTypes.string.isRequired,
+  onAddButtonClick: PropTypes.func.isRequired,
+};
+
+export {SongCard};
