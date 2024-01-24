@@ -1,13 +1,14 @@
 .song-card {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 8px;
-  }
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  
+}
 
-  .song-card:hover {
+.song-card:hover {
     transform: translateY(-5px);
   }
   

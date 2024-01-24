@@ -18,12 +18,13 @@ const SongGrid = () => {
     //     </div>
     // );
 
+    const SongList = SongArray.map((song, i) => 
+        <SongCard key={i} song={song.songName} artist={song.artist} albumArt={song.artUrl} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
+    );
+
     return (
         <div className='song-grid'>
-            {SongArray.map((song, i) => 
-                <SongCard song={song.songName} artist={song.artist} albumArt={song.artUrl} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
-            )}
-             {/* { renderSongArray} */}
+            {SongList}
         </div>
     );
 
