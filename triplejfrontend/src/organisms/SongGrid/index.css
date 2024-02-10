@@ -1,5 +1,6 @@
 .song-grid {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    /* grid-template-columns: repeat(3, 1fr); */
+    grid-template-columns: repeat(auto-fill, minmax(405px, 1fr));
     gap: 10px;
   }

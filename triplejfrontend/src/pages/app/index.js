@@ -1,10 +1,10 @@
 import React from "react";
-import { SongGrid } from "organisms/SongGrid"
+import {Main} from 'pages/main';
 
 const App = () => {
     return (
         <div>
-            <SongGrid></SongGrid>
+            <Main></Main>
         </div>
     );
 };
