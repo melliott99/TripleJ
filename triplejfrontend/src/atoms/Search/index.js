@@ -5,23 +5,23 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 const Search = () => {
-
-
-  function toggleSearch() {
+  const toggleSearch = () => {
     const searchInput = document.querySelector('.search-input');
     searchInput.classList.toggle('active');
-    searchInput.focus();
-  }
+    if (searchInput.classList.contains('active')) {
+      searchInput.focus();
+    }
+  };
 
-    return (
-        <div class="search-container">
-            <button class="search-button" onclick={() => toggleSearch()}>
-            <FontAwesomeIcon icon={faSearch} />
-             <a> </a>Search
-            </button>
-            <input type="text" class="search-input" placeholder="Type here..."/>
-      </div>
-    )
-}
+  return (
+    <div className="search-container">
+      <button className="search-button" onClick={toggleSearch}>
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        Search
+      </button>
+      <input type="text" className="search-input" placeholder="Type here..." />
+    </div>
+  );
+};
 
-export {Search}
+export { Search };
