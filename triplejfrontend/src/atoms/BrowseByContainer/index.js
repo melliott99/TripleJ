@@ -10,7 +10,7 @@ const BrowseBy = ({icon, searchType, onClick, modeType}) => {
         <div className="search-container">
             <button className="search-button" onClick={() => onClick(modeType)}>
                 <FontAwesomeIcon icon={icon} />
-                <a></a>{searchType}
+                <a></a>&nbsp;{searchType}
             </button>
         </div>
     )

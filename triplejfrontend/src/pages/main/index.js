@@ -15,17 +15,12 @@ const Main = () => {
             response.json().then((data) => {
                 setSongs(data);
                 setFilteredSongs(data);
-                // handleAlphabetClick(selectedLetter);
-                // handleModeChange(mode);
             })
         )
     }, [])
     
     useEffect(() => {
         // This effect will run whenever mode or selectedLetter changes
-        console.log('Selected Letter:', selectedLetter);
-        console.log('Mode:', mode);
-
         handleAlphabetClick(selectedLetter);
 
     }, [selectedLetter, mode]);
@@ -46,10 +41,23 @@ const Main = () => {
     const handleModeChange = (newMode) => {
         setMode(newMode)
     }    
+
+    const onShowAll = () => {
+        setFilteredSongs(SongArray);
+    }
+
+    const handleSearch = (searchTerm) => {
+        // Filter songs based on the search term
+        const results = SongArray.filter((song) =>
+          song.songName.toUpperCase().startsWith(searchTerm.toUpperCase()) ||
+          song.artist.toUpperCase().startsWith(searchTerm.toUpperCase())
+        );
+        setFilteredSongs(results);
+      };
     
     return (
         <div>
-            <NavBar onClick={ handleModeChange}></NavBar>
+            <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll}></NavBar>
             <SongGrid Songs={ FilteredSongs }></SongGrid>        
             <SearchLetterArray onClick={ handleAlphabetClick }></SearchLetterArray>
         </div>
