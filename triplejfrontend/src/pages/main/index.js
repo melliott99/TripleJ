@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SongGrid } from "organisms/SongGrid"
+import { SongList } from "organisms/SongList"
 import { SearchLetterArray } from "molecules/LetterArray"
 import { NavBar } from "molecules/NavBar"
 import Api from "api"
@@ -7,10 +8,11 @@ import './index.css'
 
 
 const Main = () => {
-    const [SongArray, setSongs] = useState([]);
-    const [FilteredSongs, setFilteredSongs] = useState([]);
+    const [songArray, setSongs] = useState([]);
+    const [filteredSongs, setFilteredSongs] = useState([]);
     const [mode, setMode] = useState('artist')
     const [selectedLetter, setLetter] = useState([])
+    const [selectedSongs, setSelectedSongs] = useState([])
 
     useEffect(() => {
         Api.getSongs().then((response) => 
@@ -25,12 +27,12 @@ const Main = () => {
         // This effect will run whenever mode or selectedLetter changes
         handleAlphabetClick(selectedLetter);
 
-    }, [selectedLetter, mode]);
+    }, [selectedLetter, mode, selectedSongs]);
 
 
     const handleAlphabetClick = (letter) => {
         setLetter(letter)
-        const filtered = SongArray.filter((song) =>
+        const filtered = songArray.filter((song) =>
             mode === 'artist'
             ? song.artist.toUpperCase().startsWith(letter)
             : mode === 'song'
@@ -45,33 +47,50 @@ const Main = () => {
     }    
 
     const onShowAll = () => {
-        setFilteredSongs(SongArray);
+        setFilteredSongs(songArray);
     }
 
     const handleSearch = (searchTerm) => {
         // Filter songs based on the search term
-        const results = SongArray.filter((song) =>
+        const results = songArray.filter((song) =>
           song.songName.toUpperCase().startsWith(searchTerm.toUpperCase()) ||
           song.artist.toUpperCase().startsWith(searchTerm.toUpperCase())
         );
         setFilteredSongs(results);
       };
     
-    
+    const selectSong = (selectedSong) => { 
+        console.log("Song is " + selectedSong.songName);
+        const isPrevSelected = selectedSongs.some(song => song.id === selectedSong.id)
+        if(!isPrevSelected)
+        {
+            setSelectedSongs([...selectedSongs, selectedSong])
+        }
+        else{
+            console.log("Song Already Selected you daft cunt");
+        }
+    };
+
+    const removeSong = (selectedSong) => { 
+        console.log(selectedSong);
+        const updatedList = selectedSongs.filter(song => song.id !== selectedSong.id)
+        setSelectedSongs(updatedList)
+        console.log(updatedList)
+    };
 
     return (
-        <>
+        <div className="container">
             <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll}></NavBar>
             <div className="main-container">
-                <SongGrid Songs={ FilteredSongs }></SongGrid>   
+                <SongGrid Songs={ filteredSongs } onResult={selectSong}></SongGrid>   
                 <div className="selected-songs-container">   
-
+                    <SongList Songs={ selectedSongs } onResult={removeSong}></SongList>
                 </div>
             </div>
             <div className="footer">
                 <SearchLetterArray onClick={ handleAlphabetClick }></SearchLetterArray>
             </div>
-        </>
+        </div>
     );
 };
 

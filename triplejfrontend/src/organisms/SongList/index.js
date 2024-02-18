@@ -1,32 +1,31 @@
 import React from 'react';
-import { SongCard } from "molecules/SongCard"
+import { SelectedSongCard } from "molecules/SelectedSongCard"
 import './index.css'
 
 
-const SongGrid = ({Songs, onResult}) => {
+const SongList = ({Songs, onResult}) => {
 
     const SongList = Songs.map((song, i) => 
-    <SongCard 
+    <SelectedSongCard 
             key={i} 
             id={song.id}
             song={song.songName} 
             artist={song.artist} 
             albumArt={song.artUrl} 
-            onAddButtonClick={() => handleAddButtonClick(song)}
-        ></SongCard>
+            onAddButtonClick={() => handleRemoveButtonClick(song)}
+        ></SelectedSongCard>
     );
 
-    const handleAddButtonClick = (song) => {
+    const handleRemoveButtonClick = (song) => {
         onResult(song)
     }
 
     return (
-        <div className="song-grid">
+        <div>
             {SongList}
         </div>
     );
 
-
 };
 
-export { SongGrid }
+export { SongList }

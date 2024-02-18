@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 
-const SongCard = ({ song, artist, albumArt, onAddButtonClick }) => {
+const SelectedSongCard = ({ song, artist, albumArt, onAddButtonClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -28,18 +28,18 @@ const SongCard = ({ song, artist, albumArt, onAddButtonClick }) => {
         <h3 className="song-title">{song}</h3>
         <p className="artist-name">{artist}</p>
       </div>
-      <button onClick={onAddButtonClick} className="add-button">
-        +
+      <button onClick={onAddButtonClick} className="remove-button">
+        -
       </button>
     </div>
   );
 };
 
-SongCard.propTypes = {
+SelectedSongCard.propTypes = {
   song: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   albumArt: PropTypes.string.isRequired,
   onAddButtonClick: PropTypes.func.isRequired,
 };
 
-export {SongCard};
+export {SelectedSongCard};
