@@ -3,6 +3,8 @@ import { SongGrid } from "organisms/SongGrid"
 import { SearchLetterArray } from "molecules/LetterArray"
 import { NavBar } from "molecules/NavBar"
 import Api from "api"
+import './index.css'
+
 
 const Main = () => {
     const [SongArray, setSongs] = useState([]);
@@ -55,12 +57,21 @@ const Main = () => {
         setFilteredSongs(results);
       };
     
+    
+
     return (
-        <div>
+        <>
             <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll}></NavBar>
-            <SongGrid Songs={ FilteredSongs }></SongGrid>        
-            <SearchLetterArray onClick={ handleAlphabetClick }></SearchLetterArray>
-        </div>
+            <div className="main-container">
+                <SongGrid Songs={ FilteredSongs }></SongGrid>   
+                <div className="selected-songs-container">   
+
+                </div>
+            </div>
+            <div className="footer">
+                <SearchLetterArray onClick={ handleAlphabetClick }></SearchLetterArray>
+            </div>
+        </>
     );
 };
 

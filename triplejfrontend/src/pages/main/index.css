@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .song-grid {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .selected-songs-container {
+    width: 20%;
+    padding: 20px;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+  }
+  

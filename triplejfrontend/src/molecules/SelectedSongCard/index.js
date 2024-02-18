@@ -14,6 +14,7 @@ const SongCard = ({ song, artist, albumArt, onAddButtonClick }) => {
   };
 
   useEffect(() => {
+
   }, []);
 
   return (
