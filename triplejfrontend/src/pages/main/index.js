@@ -18,7 +18,8 @@ const Main = () => {
         Api.getSongs().then((response) => 
             response.json().then((data) => {
                 setSongs(data);
-                setFilteredSongs(data);
+                handleAlphabetClick('A')
+                //setFilteredSongs(data);
             })
         )
     }, [])

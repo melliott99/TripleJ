@@ -11,7 +11,7 @@ const SongGrid = ({Songs, onResult}) => {
             id={song.id}
             song={song.songName} 
             artist={song.artist} 
-            albumArt={song.artUrl} 
+            trackImg={song.trackImg} 
             onAddButtonClick={() => handleAddButtonClick(song)}
         ></SongCard>
     );

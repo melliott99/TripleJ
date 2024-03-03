@@ -40,7 +40,7 @@ namespace PlaylistImporter.Services
                 Console.WriteLine($"Column1: {playlistRow.Song}, Column2: {playlistRow.Artist}, FileName: {playlistRow.PlaylistOwner}");
             }
 
-            RepositoryConnection _repoConnection = new RepositoryConnection();
+            DatabaseConnection _repoConnection = new DatabaseConnection();
             var isSuccessful = _repoConnection.InsertPlaylists(uniquePlaylist);
 
         }
@@ -58,7 +58,7 @@ namespace PlaylistImporter.Services
                     if (currentPlaylistRow.Equals(playlistRows[j]))
                     {
                         isDuplicate = true;
-                        currentPlaylistRow.PlaylistOwner = 
+                        playlistRows[j].PlaylistOwner = 
                             new StringBuilder(currentPlaylistRow.PlaylistOwner + ", " + 
                                                 playlistRows[j].PlaylistOwner).ToString();
 

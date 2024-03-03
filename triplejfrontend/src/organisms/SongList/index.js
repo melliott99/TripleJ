@@ -12,7 +12,7 @@ const SongList = ({Songs, onResult}) => {
             id={song.id}
             song={song.songName} 
             artist={song.artist} 
-            albumArt={song.artUrl} 
+            trackImg={song.artUrl} 
             onAddButtonClick={() => handleRemoveButtonClick(song)}
         ></SelectedSongCard>
         </>

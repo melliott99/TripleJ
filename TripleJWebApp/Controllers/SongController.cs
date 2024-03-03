@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using TripleJWebApp.Infrastructure;
 using TripleJWebApp.Models;
+using TripleJWebApp.Services.Interfaces;
 
 namespace TripleJWebApp.Controllers
 {
@@ -9,12 +10,13 @@ namespace TripleJWebApp.Controllers
     [Route("[controller]")]
     public class SongController : ControllerBase
     {
-
+        private readonly IMusicService _musicService;
         private readonly ILogger<SongController> _logger;
 
-        public SongController(ILogger<SongController> logger)
+        public SongController(ILogger<SongController> logger, IMusicService musicService)
         {
             _logger = logger;
+            _musicService = musicService;
         }
 
 
@@ -25,20 +27,33 @@ namespace TripleJWebApp.Controllers
         public async Task<IActionResult> GetAllSongs()
         {
             List<Song>? response;
-            using(StreamReader r = new StreamReader("static/music.json"))
-            {
-                response = JsonConvert.DeserializeObject<List<Song>>(r.ReadToEnd());
-            }
 
-            if(response == null)
+            response = await _musicService.GetAllSongs();
+
+            if (response == null)
             {
                 return NoContent();
             }
             return Ok(response);
         }
 
-        
-        //[HttpGet(Name = "PostSongs")]
-        //public 
+
+        [HttpPost]
+        [Route(ActionRoutes.VoteSongs)]
+        [ProducesResponseType(typeof(List<Song>), 200)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> SubmitVotes()
+        {
+            if (ModelState.IsValid)
+            {
+                var isSuccessful = false; 
+
+                if (isSuccessful)
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
     }
 }

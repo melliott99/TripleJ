@@ -5,27 +5,54 @@ using System.Text;
 
 namespace PlaylistDataProcessor.Repository
 {
-    public class RepositoryConnection
+    public class DatabaseConnection
     {
         private static string connectionString = "Server=(LocalDb)\\MSSQLLocalDB;Database=TripleJ;Trusted_Connection=True;";
-
-        private readonly ILogger<RepositoryConnection>? _logger;
         private readonly SqlConnection _connection;
 
-        public RepositoryConnection()
+        public DatabaseConnection()
         {
             _connection = new SqlConnection(connectionString);
             _connection.Open();
         }
-        
-        public RepositoryConnection(ILogger<RepositoryConnection> logger)
+
+
+        public async Task<List<PlaylistRow>> GetAllSongs()
         {
-            _connection =  new SqlConnection(connectionString);
-            _connection.Open();
-            _logger = logger;
+            List<PlaylistRow> response = new List<PlaylistRow>();
+            try
+            {
+                SqlCommand command = new SqlCommand("SELECT Song, Artist, Album, TrackId, TrackImg From SongTable", _connection);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    var row = new PlaylistRow();
+                    row.Song = (string)reader["Song"];
+                    row.Artist = (string)reader["Artist"];
+                    row.TrackId = (string)reader["TrackId"];
+                    row.TrackImg = (string)reader["TrackImg"];
+                    response.Add(row);
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return response;
         }
 
-        public bool InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
+        public async Task<bool> InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
         {
             bool isSuccessful = false;
             try
@@ -42,20 +69,19 @@ namespace PlaylistDataProcessor.Repository
                         command.Parameters.AddWithValue("@Album", row.Album);
                         command.Parameters.AddWithValue("@TrackImg", row.TrackImg);
                         command.Parameters.AddWithValue("@PlaylistOwner", row.PlaylistOwner);
-                        command.ExecuteNonQuery();
+                        await command.ExecuteNonQueryAsync();
                     }
-                   //_logger.LogInformation(query);
+
                 }
             }
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.ToString());
-                //_logger.LogError(ex.ToString());
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString() );
-                //_logger.LogError(ex.ToString());
             }
             finally 
             {
