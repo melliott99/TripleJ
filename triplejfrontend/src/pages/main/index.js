@@ -85,6 +85,7 @@ const Main = () => {
                 <SongGrid Songs={ filteredSongs } onResult={selectSong}></SongGrid>   
                 <div className="selected-songs-container">   
                     <SongList Songs={ selectedSongs } onResult={removeSong}></SongList>
+                    <button className="red-button">Submit</button>
                 </div>
             </div>
             <div className="footer">

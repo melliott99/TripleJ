@@ -33,3 +33,18 @@ body {
   .footer {
     padding-top: 20px; /* Add some padding to the footer */
   }
+
+  .red-button {
+    background-color: #e74c3c; /* Red background color */
+    color: #ffffff; /* White text color */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer;
+    align-self: stretch; /* Make the button stretch to full width */
+    margin-top: auto; /* Push the button to the bottom */
+  }
+  
+  .red-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+  }

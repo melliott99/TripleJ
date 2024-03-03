@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TripleJWebApp.Infrastructure;
 using TripleJWebApp.Models;
 
 namespace TripleJWebApp.Controllers
@@ -9,24 +10,35 @@ namespace TripleJWebApp.Controllers
     public class SongController : ControllerBase
     {
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<SongController> _logger;
 
-        public SongController(ILogger<WeatherForecastController> logger)
+        public SongController(ILogger<SongController> logger)
         {
             _logger = logger;
         }
 
 
-        [HttpGet(Name = "GetSongs")]
-        public IEnumerable<Song> Get()
+        [HttpGet]
+        [Route(ActionRoutes.Empty)]
+        [ProducesResponseType(typeof(List<Song>), 200)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetAllSongs()
         {
-            List<Song> songList = null;
+            List<Song>? response;
             using(StreamReader r = new StreamReader("static/music.json"))
             {
-                songList = JsonConvert.DeserializeObject<List<Song>>(r.ReadToEnd());
+                response = JsonConvert.DeserializeObject<List<Song>>(r.ReadToEnd());
             }
 
-            return songList;
+            if(response == null)
+            {
+                return NoContent();
+            }
+            return Ok(response);
         }
+
+        
+        //[HttpGet(Name = "PostSongs")]
+        //public 
     }
 }

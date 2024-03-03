@@ -6,7 +6,8 @@ import './index.css'
 const SongList = ({Songs, onResult}) => {
 
     const SongList = Songs.map((song, i) => 
-    <SelectedSongCard 
+    <>
+        <SelectedSongCard 
             key={i} 
             id={song.id}
             song={song.songName} 
@@ -14,6 +15,7 @@ const SongList = ({Songs, onResult}) => {
             albumArt={song.artUrl} 
             onAddButtonClick={() => handleRemoveButtonClick(song)}
         ></SelectedSongCard>
+        </>
     );
 
     const handleRemoveButtonClick = (song) => {
