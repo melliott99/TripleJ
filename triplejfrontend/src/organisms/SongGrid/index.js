@@ -8,7 +8,7 @@ const SongGrid = ({Songs, onResult}) => {
     const SongList = Songs.map((song, i) => 
     <SongCard 
             key={i} 
-            id={song.id}
+            trackId={song.trackId}
             song={song.songName} 
             artist={song.artist} 
             trackImg={song.trackImg} 

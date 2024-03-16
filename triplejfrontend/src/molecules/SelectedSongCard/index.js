@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 
-const SelectedSongCard = ({ song, artist, trackImg, onAddButtonClick }) => {
+const SelectedSongCard = ({ index, trackId, song, artist, trackImg, onAddButtonClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -17,12 +17,14 @@ const SelectedSongCard = ({ song, artist, trackImg, onAddButtonClick }) => {
 
   }, []);
 
+
   return (
     <div
       className={`song-card ${isHovered ? 'hovered' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <p className='index'>{index + 1}</p>
       <img src={trackImg} alt={`${song} - ${artist}`} className="album-art" />
       <div className="song-info">
         <h3 className="song-title">{song}</h3>
@@ -36,6 +38,8 @@ const SelectedSongCard = ({ song, artist, trackImg, onAddButtonClick }) => {
 };
 
 SelectedSongCard.propTypes = {
+  index: PropTypes.string.isRequired,
+  trackId: PropTypes.string.isRequired,
   song: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   trackImg: PropTypes.string.isRequired,

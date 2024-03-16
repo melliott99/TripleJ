@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 
-const SongCard = ({ song, artist, trackImg, onAddButtonClick }) => {
+const SongCard = ({ trackId, song, artist, trackImg, onAddButtonClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -35,6 +35,7 @@ const SongCard = ({ song, artist, trackImg, onAddButtonClick }) => {
 };
 
 SongCard.propTypes = {
+  trackId: PropTypes.string.isRequired,
   song: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   trackImg: PropTypes.string.isRequired,

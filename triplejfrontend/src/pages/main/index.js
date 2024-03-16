@@ -60,24 +60,40 @@ const Main = () => {
         setFilteredSongs(results);
       };
     
+
+    //Select Songs
     const selectSong = (selectedSong) => { 
-        console.log("Song is " + selectedSong.songName);
-        const isPrevSelected = selectedSongs.some(song => song.id === selectedSong.id)
+        console.log("added " + selectedSong.trackId);
+        const isPrevSelected = selectedSongs.some(song => song.trackId === selectedSong.trackId)
         if(!isPrevSelected)
         {
-            setSelectedSongs([...selectedSongs, selectedSong])
+            if(selectedSongs.length < 10)
+            {
+                setSelectedSongs([...selectedSongs, selectedSong])
+                console.log(selectedSongs)
+            }
+            else
+            {
+                alert("You already have 10 songs selected, please remove a song to add a new song");
+            }
         }
         else{
-            console.log("Song Already Selected you daft cunt");
+            alert("Song Already Selected you daft cunt");
         }
     };
 
-    const removeSong = (selectedSong) => { 
-        console.log(selectedSong);
-        const updatedList = selectedSongs.filter(song => song.id !== selectedSong.id)
+    const reOrderSelectedSongs = (updatedList) => { 
         setSelectedSongs(updatedList)
         console.log(updatedList)
     };
+  
+    const removeSong = (selectedSong) => { 
+        console.log(selectedSong);
+        const updatedList = selectedSongs.filter(song => song.trackId !== selectedSong.trackId)
+        setSelectedSongs(updatedList)
+        console.log(updatedList)
+    };
+    //End Select Songs
 
     return (
         <div className="container">
@@ -85,7 +101,9 @@ const Main = () => {
             <div className="main-container">
                 <SongGrid Songs={ filteredSongs } onResult={selectSong}></SongGrid>   
                 <div className="selected-songs-container">   
-                    <SongList Songs={ selectedSongs } onResult={removeSong}></SongList>
+                    <div>
+                        <SongList Songs={ selectedSongs } onRemoveSong={ removeSong } onDragSong={ reOrderSelectedSongs }></SongList> 
+                    </div>
                     <button className="red-button">Submit</button>
                 </div>
             </div>

@@ -1,47 +1,65 @@
 .song-card {
   display: flex;
-  align-items: center;
+  align-items: left;
   border: 1px solid #ddd;
-  padding: 10px;
-  margin: 10px;
+  padding: 0px;
+  margin: 5px;
   border-radius: 8px;
-  
 }
 
-/* .song-card:hover {
-    transform: translateY(-5px);
-  }
-   */
-  .album-art {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    margin-right: 10px;
-    border-radius: 4px;
-  }
-  
-  .song-info {
-    flex-grow: 1;
-  }
-  
-  .song-title {
-    margin: 0;
-  }
-  
-  .artist-name {
-    margin: 0;
-    color: #666;
-  }
-  
-  .remove-button {
-    background-color: #E74C3C;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+.song-card:hover {
+  transform: translateY(-5px);
+}
+
+.song-card-item p {
+  margin: 0;
+}
+
+.album-art {
+  width: 60px; /* Adjust the width of the album art */
+  height: 60px; /* Adjust the height of the album art */
+  object-fit: cover;
+  margin-right: 5px; /* Adjust the margin-right of the album art */
+  border-radius: 4px;
+}
+
+.index {
+  margin-right: 20px; /* Increased spacing between index and other elements */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* Adjust the height of the album art */
+  width:30px;
+  padding: 8px;
+  background-color: #3498db; /* Background color for the index */
+  color: white; /* Text color for the index */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+  font-weight: bold; /* Make the index bold */
+}
+
+.song-info {
+  flex-grow: 1;
+}
+
+.song-title {
+  margin: 0;
+}
+
+.artist-name {
+  margin: 0;
+  color: #666;
+}
+
+.remove-button {
+  background-color: #E74C3C;
+  color: white;
+  border: none;
+  padding: 6px 12px; /* Adjust the padding */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px; /* Adjust the font size */
+  border-radius: 4px;
+  cursor: pointer;
+}
