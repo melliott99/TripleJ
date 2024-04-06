@@ -30,12 +30,12 @@ namespace TripleJWebApp.Services
             
         }
 
-        public async Task<IActionResult> SubmitVotes(List<Song> votes, string voter)
+        public async Task<bool> SubmitVotes(List<Song> votes, string voter)
         {
             List<VotingRow> votingRows = _mapper.Map< List<Song>, List<VotingRow>>(votes);
             AssignVoterAndPoints(votingRows, voter);
             var result = await _connection.SubmitVotes(votingRows);
-            return null;
+            return result;
         }
 
 

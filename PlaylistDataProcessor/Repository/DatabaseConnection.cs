@@ -56,8 +56,37 @@ namespace PlaylistDataProcessor.Repository
 
         public async Task<bool> SubmitVotes(List<VotingRow> votes)
         {
+            bool isSuccessful = false;
+            try
+            {
+                foreach (VotingRow row in votes)
+                {
+                    string query = new StringBuilder($"INSERT INTO Votes (TrackId, Point, Voter) " +
+                    $"VALUES (@TrackId, @Point, @Voter)").ToString();
+                    using (SqlCommand command = new SqlCommand(query, _connection))
+                    {
+                        command.Parameters.AddWithValue("@TrackId", row.TrackId);
+                        command.Parameters.AddWithValue("@Point", row.Point);
+                        command.Parameters.AddWithValue("@Voter", row.Voter);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                isSuccessful = true;
+            }
+            catch (DbException ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _connection.Close();
+            }
 
-            return true;
+            return isSuccessful;
         }
 
         public bool InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
@@ -80,6 +109,7 @@ namespace PlaylistDataProcessor.Repository
                         command.ExecuteNonQuery();
                     }
                 }
+                isSuccessful = true;
             }
             catch(DbException ex)
             { 

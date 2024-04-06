@@ -46,8 +46,7 @@ namespace TripleJWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                // var isSuccessful = await _musicService.SubmitVotes(votes, voter);
-                var isSuccessful = true;
+                var isSuccessful = await _musicService.SubmitVotes(votes, voter);
                 if (isSuccessful)
                 {
                     return Ok();
