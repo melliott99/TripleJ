@@ -18,7 +18,7 @@ namespace PlaylistImporter.Services
         private static string PLAYLIST_DIRECTORY = "C:/\\Users/\\Michael/\\Desktop/\\Playlists";
 
 
-        public async static void BulkImportPlaylist()
+        public static void BulkImportPlaylist()
         {
             List<PlaylistRow> playlistRows = new List<PlaylistRow>();
 
@@ -41,7 +41,7 @@ namespace PlaylistImporter.Services
             }
 
             DatabaseConnection _repoConnection = new DatabaseConnection();
-            var isSuccessful = _repoConnection.InsertPlaylists(uniquePlaylist);
+            var isSuccessful =  _repoConnection.InsertPlaylists(uniquePlaylist);
 
         }
 

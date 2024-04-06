@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Abstractions;
 using PlaylistDataProcessor.Models;
 using PlaylistDataProcessor.Repository;
+using System.Collections.Generic;
 using TripleJWebApp.Models;
 using TripleJWebApp.Services.Interfaces;
 
@@ -28,7 +30,25 @@ namespace TripleJWebApp.Services
             
         }
 
+        public async Task<IActionResult> SubmitVotes(List<Song> votes, string voter)
+        {
+            List<VotingRow> votingRows = _mapper.Map< List<Song>, List<VotingRow>>(votes);
+            AssignVoterAndPoints(votingRows, voter);
+            var result = await _connection.SubmitVotes(votingRows);
+            return null;
+        }
 
+
+        private void AssignVoterAndPoints(List<VotingRow> votingRows, string voter)
+        {
+            int point = 10;
+            foreach(VotingRow v in votingRows)
+            {
+                v.Voter = voter;
+                v.Point = point;
+                point--;
+            }
+        }
 
     }
 }

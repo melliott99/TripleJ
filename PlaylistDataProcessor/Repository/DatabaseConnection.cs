@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using PlaylistDataProcessor.Models;
+using System.Data.Common;
 using System.Text;
 
 namespace PlaylistDataProcessor.Repository
@@ -22,7 +23,7 @@ namespace PlaylistDataProcessor.Repository
             List<PlaylistRow> response = new List<PlaylistRow>();
             try
             {
-                SqlCommand command = new SqlCommand("SELECT Song, Artist, Album, TrackId, TrackImg From SongTable", _connection);
+                SqlCommand command = new SqlCommand("SELECT Song, Artist, Album, TrackId, TrackImg, PlaylistOwner From Songs", _connection);
                 SqlDataReader reader = await command.ExecuteReaderAsync();
 
                 while (reader.Read())
@@ -32,6 +33,7 @@ namespace PlaylistDataProcessor.Repository
                     row.Artist = (string)reader["Artist"];
                     row.TrackId = (string)reader["TrackId"];
                     row.TrackImg = (string)reader["TrackImg"];
+                    row.PlaylistOwner = (string)reader["PlaylistOwner"]; 
                     response.Add(row);
                 }
             }
@@ -52,14 +54,20 @@ namespace PlaylistDataProcessor.Repository
             return response;
         }
 
-        public async Task<bool> InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
+        public async Task<bool> SubmitVotes(List<VotingRow> votes)
+        {
+
+            return true;
+        }
+
+        public bool InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
         {
             bool isSuccessful = false;
             try
             {
                 foreach(PlaylistRow row in uniquePlaylistList)
                 {
-                    string query = new StringBuilder($"INSERT INTO SongTable (TrackId, Song, Artist, Album, TrackImg, PlaylistOwner) " +
+                    string query = new StringBuilder($"INSERT INTO Songs (TrackId, Song, Artist, Album, TrackImg, PlaylistOwner) " +
                     $"VALUES (@TrackId, @Song, @Artist, @Album, @TrackImg, @PlaylistOwner)").ToString();
                     using (SqlCommand command = new SqlCommand(query, _connection))
                     {
@@ -69,15 +77,13 @@ namespace PlaylistDataProcessor.Repository
                         command.Parameters.AddWithValue("@Album", row.Album);
                         command.Parameters.AddWithValue("@TrackImg", row.TrackImg);
                         command.Parameters.AddWithValue("@PlaylistOwner", row.PlaylistOwner);
-                        await command.ExecuteNonQueryAsync();
+                        command.ExecuteNonQuery();
                     }
-
                 }
             }
-            catch (SqlException ex)
-            {
-                Console.WriteLine(ex.ToString());
-
+            catch(DbException ex)
+            { 
+                Console.WriteLine(ex.ToString()); 
             }
             catch (Exception ex)
             {

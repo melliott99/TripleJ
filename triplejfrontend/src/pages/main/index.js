@@ -95,6 +95,26 @@ const Main = () => {
     };
     //End Select Songs
 
+
+    const submitVotes = () => {
+        console.log(selectedSongs);
+        Api.postVotes(selectedSongs, "Michael").then((response) => {
+            if(response.ok)
+            {
+                alert("Votes Submitted Successfully")
+            }
+            else 
+            {
+                // Handle submission failure
+                console.error(response.body)
+                alert("Your Votes Could Not Be Submitted")
+            }
+        }).catch((error) => {
+            alert("Error while submitting votes:", error)
+            console.error("Error while submitting votes:", error);
+        });
+    }
+
     return (
         <div className="container">
             <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll}></NavBar>
@@ -104,12 +124,14 @@ const Main = () => {
                     <div>
                         <SongList Songs={ selectedSongs } onRemoveSong={ removeSong } onDragSong={ reOrderSelectedSongs }></SongList> 
                     </div>
-                    <button className="red-button">Submit</button>
                 </div>
+                <button className="red-button" onClick={submitVotes}>Submit</button>
             </div>
+
             <div className="footer">
                 <SearchLetterArray onClick={ handleAlphabetClick }></SearchLetterArray>
             </div>
+
         </div>
     );
 };

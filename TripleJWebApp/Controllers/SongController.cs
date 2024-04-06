@@ -41,13 +41,13 @@ namespace TripleJWebApp.Controllers
         [HttpPost]
         [Route(ActionRoutes.VoteSongs)]
         [ProducesResponseType(typeof(List<Song>), 200)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> SubmitVotes()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SubmitVotes([Bind("trackId, songName, artist, trackImg")] List<Song> votes, string voter)
         {
             if (ModelState.IsValid)
             {
-                var isSuccessful = false; 
-
+                // var isSuccessful = await _musicService.SubmitVotes(votes, voter);
+                var isSuccessful = true;
                 if (isSuccessful)
                 {
                     return Ok();
