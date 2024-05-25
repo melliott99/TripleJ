@@ -24,11 +24,11 @@ namespace TripleJWebApp.Controllers
         [Route(ActionRoutes.Empty)]
         [ProducesResponseType(typeof(List<Song>), 200)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAllSongs()
+        public async Task<IActionResult> GetAllSongs(string UserId)
         {
             List<Song>? response;
 
-            response = await _musicService.GetAllSongs();
+            response = await _musicService.GetAllSongs(UserId);
 
             if (response == null)
             {

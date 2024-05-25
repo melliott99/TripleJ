@@ -22,7 +22,7 @@ namespace TripleJWebApp.Services
             _connection = new DatabaseConnection();
         }
 
-        public async Task<List<Song>> GetAllSongs()
+        public async Task<List<Song>> GetAllSongs(string UserId)
         {
             var result = await _connection.GetAllSongs();
    

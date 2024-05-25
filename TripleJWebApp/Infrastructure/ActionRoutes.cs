@@ -2,7 +2,7 @@
 {
     public static class ActionRoutes
     {
-        public const string Empty = "";
-        public const string VoteSongs = "/Vote";
+        public const string Empty = "{UserId}";
+        public const string VoteSongs = "{UserId}/Vote";
     }
 }

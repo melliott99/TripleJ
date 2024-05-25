@@ -3,7 +3,7 @@ const API_BASE_ADDRESS = "https://localhost:7216";
 export default class Api {
 
     static getSongs(){
-        const uri = API_BASE_ADDRESS + "/Song"
+        const uri = API_BASE_ADDRESS + "{userId}/Song"
         return fetch(uri, {
             method: 'GET',
         });
