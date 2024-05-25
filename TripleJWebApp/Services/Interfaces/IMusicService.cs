@@ -6,7 +6,8 @@ namespace TripleJWebApp.Services.Interfaces
     public interface IMusicService
     {
         Task<List<Song>> GetAllSongs(String userId);
-        Task<Boolean> SubmitVotes(List<Song> votes, string voter);
+        Task<bool> SubmitVotes(List<Song> votes, string voter);
 
+        Task<string> ValidateUser(string userId);
     }
 }

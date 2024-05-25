@@ -38,6 +38,12 @@ namespace TripleJWebApp.Services
             return result;
         }
 
+        public async Task<string> ValidateUser(string userId)
+        {
+            var result = await _connection.ValidateUser(userId);
+            return result;
+        }
+
 
         private void AssignVoterAndPoints(List<VotingRow> votingRows, string voter)
         {

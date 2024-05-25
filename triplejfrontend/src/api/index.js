@@ -2,8 +2,8 @@ const API_BASE_ADDRESS = "https://localhost:7216";
 
 export default class Api {
 
-    static getSongs(){
-        const uri = API_BASE_ADDRESS + "{userId}/Song"
+    static getSongs(userId){
+        const uri = API_BASE_ADDRESS + "/Song/" + userId
         return fetch(uri, {
             method: 'GET',
         });
@@ -17,6 +17,13 @@ export default class Api {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify(votes)
+        });
+    }
+
+    static validateUser(userId) {
+        const uri = API_BASE_ADDRESS + "/User/Validate/" + userId
+        return fetch(uri, {
+            method: 'GET',
         });
     }
 }

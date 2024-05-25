@@ -4,18 +4,21 @@ import { SongList } from "organisms/SongList"
 import { SearchLetterArray } from "molecules/LetterArray"
 import { NavBar } from "molecules/NavBar"
 import Api from "api"
+
 import './index.css'
 
 
-const Main = () => {
+const Main = ({userId}) => {
     const [songArray, setSongs] = useState([]);
     const [filteredSongs, setFilteredSongs] = useState([]);
-    const [mode, setMode] = useState('artist')
-    const [selectedLetter, setLetter] = useState([])
-    const [selectedSongs, setSelectedSongs] = useState([])
+    const [mode, setMode] = useState('artist');
+    const [selectedLetter, setLetter] = useState([]);
+    const [selectedSongs, setSelectedSongs] = useState([]);
 
+    // const userId = 'DeadPage'
     useEffect(() => {
-        Api.getSongs().then((response) => 
+        console.log("User id is " + userId);
+        Api.getSongs(userId).then((response) => 
             response.json().then((data) => {
                 setSongs(data);
                 handleAlphabetClick('A')
@@ -98,7 +101,7 @@ const Main = () => {
 
     const submitVotes = () => {
         console.log(selectedSongs);
-        Api.postVotes(selectedSongs, "Michael").then((response) => {
+        Api.postVotes(selectedSongs, userId).then((response) => {
             if(response.ok)
             {
                 alert("Votes Submitted Successfully")

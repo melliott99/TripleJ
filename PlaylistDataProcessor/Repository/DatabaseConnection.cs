@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Azure;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using PlaylistDataProcessor.Models;
 using System.Data.Common;
@@ -91,13 +92,11 @@ namespace PlaylistDataProcessor.Repository
 
         public bool InsertPlaylists(List<PlaylistRow> uniquePlaylistList)
         {
-            PlaylistRow row2 = null;
             bool isSuccessful = false;
             try
             {
                 foreach(PlaylistRow row in uniquePlaylistList)
                 {
-                    row2 = row;
                     string query = new StringBuilder($"INSERT INTO Songs (TrackId, Song, Artist, Album, TrackImg, PlaylistOwner) " +
                     $"VALUES (@TrackId, @Song, @Artist, @Album, @TrackImg, @PlaylistOwner)").ToString();
                     using (SqlCommand command = new SqlCommand(query, _connection))
@@ -115,7 +114,6 @@ namespace PlaylistDataProcessor.Repository
             }
             catch(DbException ex)
             {
-                Console.Write(row2.ToString());
                 Console.WriteLine(ex.ToString()); 
             }
             catch (Exception ex)
@@ -128,6 +126,38 @@ namespace PlaylistDataProcessor.Repository
             }
 
             return isSuccessful;
+        }
+
+        public async Task<string> ValidateUser(string userId)
+        {
+            string userName = null;
+            try
+            {
+                SqlCommand command = new SqlCommand($"SELECT Name from Users where UserId = @UserId", _connection);
+                command.Parameters.AddWithValue("@UserId", userId);
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    userName = reader["Name"] != DBNull.Value ? (string)reader["Name"] : null;
+                };
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return userName;
         }
     }
 }
