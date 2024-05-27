@@ -1,7 +1,20 @@
-.navbar {
+  .navbar {
     background-color: #3498db;
     color: #fff;
     padding: 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Ensure space between left and right content */
   }
+  
+  .navbar-left {
+    display: flex; /* Align items horizontally */
+    gap: 10px; /* Optional: Add some space between items */
+  }
+  
+  .navbar-right {
+    /* Style for the user name text */
+    margin-left: auto; /* Push this div to the right */
+    margin-right: 15px;
+  }
+  

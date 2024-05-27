@@ -8,14 +8,14 @@ import Api from "api"
 import './index.css'
 
 
-const Main = ({userId}) => {
+const Main = ({userId, userName}) => {
     const [songArray, setSongs] = useState([]);
     const [filteredSongs, setFilteredSongs] = useState([]);
     const [mode, setMode] = useState('artist');
     const [selectedLetter, setLetter] = useState([]);
     const [selectedSongs, setSelectedSongs] = useState([]);
+    const [voteMySongCount, setVoteMySongCount] = useState(0)
 
-    // const userId = 'DeadPage'
     useEffect(() => {
         console.log("User id is " + userId);
         Api.getSongs(userId).then((response) => 
@@ -63,17 +63,33 @@ const Main = ({userId}) => {
         setFilteredSongs(results);
       };
     
-
     //Select Songs
     const selectSong = (selectedSong) => { 
-        console.log("added " + selectedSong.trackId);
         const isPrevSelected = selectedSongs.some(song => song.trackId === selectedSong.trackId)
         if(!isPrevSelected)
         {
             if(selectedSongs.length < 10)
             {
-                setSelectedSongs([...selectedSongs, selectedSong])
-                console.log(selectedSongs)
+                if(selectedSong.playlistOwners.includes(userId))
+                {
+                    if(voteMySongCount > 4)
+                    {
+                        alert("You cannot add more than 5 of your songs ")
+                    }
+                    else
+                    {
+                        setSelectedSongs([...selectedSongs, selectedSong])
+                        console.log("Vote my song before adding my song: " + voteMySongCount)
+                        setVoteMySongCount(voteMySongCount + 1)
+                    }
+                }
+                else
+                {
+                    setSelectedSongs([...selectedSongs, selectedSong])
+                
+                    console.log("You don't own this song so you are chill")
+                }
+                
             }
             else
             {
@@ -81,7 +97,7 @@ const Main = ({userId}) => {
             }
         }
         else{
-            alert("Song Already Selected you daft cunt");
+            alert("Song already selected you daft cunt");
         }
     };
 
@@ -94,6 +110,7 @@ const Main = ({userId}) => {
         console.log(selectedSong);
         const updatedList = selectedSongs.filter(song => song.trackId !== selectedSong.trackId)
         setSelectedSongs(updatedList)
+        setVoteMySongCount(voteMySongCount - 1)
         console.log(updatedList)
     };
     //End Select Songs
@@ -120,9 +137,9 @@ const Main = ({userId}) => {
 
     return (
         <div className="container">
-            <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll}></NavBar>
+            <NavBar onClick={ handleModeChange} onResult={handleSearch} onShowAll={onShowAll} userName={userName}></NavBar>
             <div className="main-container">
-                <SongGrid Songs={ filteredSongs } onResult={selectSong}></SongGrid>   
+                <SongGrid Songs={ filteredSongs } userId={userId} onResult={selectSong}></SongGrid>   
                 <div className="selected-songs-container">   
                     <div>
                         <SongList Songs={ selectedSongs } onRemoveSong={ removeSong } onDragSong={ reOrderSelectedSongs }></SongList> 

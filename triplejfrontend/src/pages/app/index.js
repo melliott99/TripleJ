@@ -4,22 +4,6 @@ import { Main } from 'pages/main';
 import { DeadPage } from '../../DeadPage';
 import Api from "api"
 
-// const App = () => {
-//     return (
-//         <Router>
-//       <Routes>
-//         <Route path="/" element={<DeadPage />} />
-//         <Route path="/:userId" element={<MainWrapper />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// const MainWrapper = () => {
-//   const { userId } = useParams();
-//   return <Main userId={userId} />;
-// };
-
 const App = () => {
     return (
       <Router>
@@ -34,38 +18,40 @@ const App = () => {
 const ProtectedRoute = () => {
     const { userId } = useParams();
     const [isValid, setIsValid] = useState(null);
-  
+    
+    const [userName, setUserName] = useState([]);
     useEffect(() => {
         try
         {
-            Api.validateUser(userId).then((response) =>{
-                // response.json().then((data) => {
-                    if(response.ok)
-                        {
-                            console.log("response ok and data is ");
-                            setIsValid(true);
-                        }
-                    // console.log("UserName is : " + data)
-                    // if(data.userName != '')
-                    // {
-                    //     setIsValid(true);    
-                    // }
-                })
-            // )
+          Api.validateUser(userId).then((response) =>{
+                  if(response.ok)
+                  {
+                    setIsValid(true);
+                    response.json().then((data) =>{
+                      setUserName(data.userName)
+                    })
+                  }
+                  else
+                  {
+                    alert("Invalid Id");
+                    console.log("Invalid User Id");
+                    setIsValid(false);
+                  }
+              }
+          )
         }
         catch(error)
         {
             console.error('Error validating user ID:', error);
             setIsValid(false); // If there's an error, treat as invalid
         }
-    //   validateUserId();
     }, [userId]);
   
     if (isValid === null) {
       return <div>Loading...</div>; // Or a loading spinner
     }
   
-    return isValid ? <Main userId={userId} /> : <DeadPage />;
+    return isValid ? <Main userId={userId} userName={userName}/> : <DeadPage />;
   };
 
 export { App };

@@ -21,19 +21,20 @@ namespace TripleJWebApp.Controllers
 
         [HttpGet]
         [Route(ActionRoutes.ValidateUsers)]
-        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(User), 200)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> ValidateUser(string UserId)
         {
-            string userName = null;
+            User user = new();
+            user.UserId = UserId;
+            user.UserName = await _musicService.ValidateUser(UserId);
 
-            userName = await _musicService.ValidateUser(UserId);
-
-            if (userName == null)
+            if (user.UserName == "N/A")
             {
-                return NoContent();
+                return BadRequest(user);
             }
-            return Ok(userName);
+            return Ok(user);
         }
     }
 }

@@ -130,7 +130,7 @@ namespace PlaylistDataProcessor.Repository
 
         public async Task<string> ValidateUser(string userId)
         {
-            string userName = null;
+            string userName = "N/A";
             try
             {
                 SqlCommand command = new SqlCommand($"SELECT Name from Users where UserId = @UserId", _connection);
@@ -140,7 +140,7 @@ namespace PlaylistDataProcessor.Repository
 
                 while (reader.Read())
                 {
-                    userName = reader["Name"] != DBNull.Value ? (string)reader["Name"] : null;
+                    userName = reader["Name"] != DBNull.Value ? (string)reader["Name"] : "N/A";
                 };
             }
             catch (SqlException ex)

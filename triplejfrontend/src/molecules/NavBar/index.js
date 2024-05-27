@@ -4,7 +4,7 @@ import { BrowseBy } from "atoms/BrowseByContainer"
 import { faPalette, faMusic, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
 
-const NavBar = ({onClick, onResult, onShowAll}) => {
+const NavBar = ({onClick, onResult, onShowAll, userName}) => {
 
     const handleSearch = (searchTerm) => {
         onResult(searchTerm);
@@ -12,10 +12,16 @@ const NavBar = ({onClick, onResult, onShowAll}) => {
 
     return (
         <div className='navbar'>
-            <Search onResult={ handleSearch }></Search>
-            <BrowseBy icon={faPalette} searchType='Browse By Artist' onClick={() => onClick('artist')}></BrowseBy>
-            <BrowseBy icon={faMusic} searchType='Browse By Song' onClick={() => onClick('song')}></BrowseBy>
-            <BrowseBy icon={faTableCells} searchType='Show All' onClick={() => onShowAll()}></BrowseBy>
+            <div className='navbar-left'>
+                <Search onResult={ handleSearch }></Search>
+                <BrowseBy icon={faPalette} searchType='Browse By Artist' onClick={() => onClick('artist')}></BrowseBy>
+                <BrowseBy icon={faMusic} searchType='Browse By Song' onClick={() => onClick('song')}></BrowseBy>
+                <BrowseBy icon={faTableCells} searchType='Show All' onClick={() => onShowAll()}></BrowseBy>
+            </div>
+            <div className='navbar-right'>
+                <a>{userName}</a>
+            </div>
+            
         </div>
     )
 }

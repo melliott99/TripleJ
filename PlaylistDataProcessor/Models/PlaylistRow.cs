@@ -28,7 +28,7 @@ namespace PlaylistDataProcessor.Models
         [Ignore]
         public string? PlaylistOwner { get; set; }
 
-        public Boolean Equals(PlaylistRow other)
+        public bool Equals(PlaylistRow other)
         {
             if (other.TrackId == TrackId || (other.Song == Song && other.Artist == Artist))
             {
