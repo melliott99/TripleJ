@@ -3,6 +3,7 @@
     public static class ActionRoutes
     {
         public const string Empty = "{UserId}";
+        public const string GetVotes = "{UserId}/Votes";
         public const string VoteSongs = "{UserId}/Vote";
 
         public const string ValidateUsers = "Validate/{UserId}";

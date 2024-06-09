@@ -9,8 +9,15 @@ export default class Api {
         });
     }
 
-    static postVotes(votes, voter){
-        const uri = API_BASE_ADDRESS + "/Vote?voter=" + voter;
+    static getUserVotedSongs(userId){
+        const uri = API_BASE_ADDRESS + "/Song/" + userId + "/Votes"
+        return fetch(uri, {
+            method: 'GET',
+        });
+    }
+
+    static postVotes(votes, userId){
+        const uri = API_BASE_ADDRESS + "/Song/" + userId + "/Vote";
         return fetch(uri, {
             method: 'POST',
             headers: {

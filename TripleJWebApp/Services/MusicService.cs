@@ -30,11 +30,23 @@ namespace TripleJWebApp.Services
             
         }
 
-        public async Task<bool> SubmitVotes(List<Song> votes, string voter)
+        public async Task<List<Song>> GetUserVotedSongs(string UserId)
+        {
+            var result = await _connection.GetUserVotedSongs(UserId);
+
+            return _mapper.Map<List<PlaylistRow>, List<Song>>(result);
+
+        }
+
+        public async Task<bool> SubmitVotes(List<Song> votes, string userId)
         {
             List<VotingRow> votingRows = _mapper.Map< List<Song>, List<VotingRow>>(votes);
-            AssignVoterAndPoints(votingRows, voter);
+            AssignVoterAndPoints(votingRows, userId);
             var result = await _connection.SubmitVotes(votingRows);
+            if(result)
+            {
+                result = await _connection.UserSubmittedVotes(userId);
+            }
             return result;
         }
 
@@ -45,12 +57,12 @@ namespace TripleJWebApp.Services
         }
 
 
-        private void AssignVoterAndPoints(List<VotingRow> votingRows, string voter)
+        private void AssignVoterAndPoints(List<VotingRow> votingRows, string userId)
         {
             int point = 10;
             foreach(VotingRow v in votingRows)
             {
-                v.Voter = voter;
+                v.Voter = userId;
                 v.Point = point;
                 point--;
             }

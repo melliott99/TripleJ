@@ -16,20 +16,16 @@ const SongGrid = ({Songs, userId, onResult}) => {
                 song={song.songName} 
                 artist={song.artist} 
                 trackImg={song.trackImg} 
-                isOwner={() => checkIsOwner(song)}
+                playlistOwners={song.playlistOwners}
+                userId={userId}
                 onAddButtonClick={() => handleAddButtonClick(song)}
             ></SongCard>
     );
 
     const handleAddButtonClick = (song) => {
         onResult(song)
-        console.log("playlist owners are: " + song.playlistOwners + " userId is: " + userId)
     };
 
-    const checkIsOwner = (song) => {
-        
-        return song.playlistOwners.includes(userId)
-    }
 
     return (
         <div className="song-grid">

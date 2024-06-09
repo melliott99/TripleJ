@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 
-const SongCard = ({ trackId, song, artist, trackImg, isOwner, onAddButtonClick }) => {
+const SongCard = ({ trackId, song, artist, trackImg, playlistOwners, userId, onAddButtonClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -11,6 +11,11 @@ const SongCard = ({ trackId, song, artist, trackImg, isOwner, onAddButtonClick }
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+
+  const checkIsOwner = () => {
+    return playlistOwners.includes(userId)
   };
 
   useEffect(() => {
@@ -26,7 +31,7 @@ const SongCard = ({ trackId, song, artist, trackImg, isOwner, onAddButtonClick }
       <div className="song-info">
         <h3 className="song-title">{song}</h3>
         <p className="artist-name">{artist}</p>
-        {isOwner && <p>You own this song</p>}
+        {checkIsOwner() ? <p>You own this song</p> : <p></p>}
       </div>
       <button onClick={onAddButtonClick} className="add-button">
         +
@@ -40,7 +45,8 @@ SongCard.propTypes = {
   song: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   trackImg: PropTypes.string.isRequired,
-  isOwner: PropTypes.bool.isRequired,
+  playlistOwners: PropTypes.array.isRequired,
+  userId: PropTypes.string.isRequired,
   onAddButtonClick: PropTypes.func.isRequired,
 };
 

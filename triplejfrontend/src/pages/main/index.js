@@ -16,6 +16,8 @@ const Main = ({userId, userName}) => {
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [voteMySongCount, setVoteMySongCount] = useState(0)
 
+    const numberRegex =  /^[0-9]/;
+
     useEffect(() => {
         console.log("User id is " + userId);
         Api.getSongs(userId).then((response) => 
@@ -25,8 +27,27 @@ const Main = ({userId, userName}) => {
                 //setFilteredSongs(data);
             })
         )
-    }, [])
+    }, []);
     
+    useEffect(() => {
+        
+        Api.getUserVotedSongs(userId).then((response) => {
+            console.log("response is: " + response.status)
+            if(response.ok)
+            {
+                console.log("Changing selected songs")
+                response.json().then((data) => {
+
+                    setSelectedSongs(data);
+                })
+            }
+            else
+            {
+                console.log("Not happy")
+            }
+        })
+    }, []);
+
     useEffect(() => {
         // This effect will run whenever mode or selectedLetter changes
         handleAlphabetClick(selectedLetter);
@@ -36,22 +57,53 @@ const Main = ({userId, userName}) => {
 
     const handleAlphabetClick = (letter) => {
         setLetter(letter)
-        const filtered = songArray.filter((song) =>
-            mode === 'artist'
-            ? song.artist.toUpperCase().startsWith(letter)
-            : mode === 'song'
-            ? song.songName.toUpperCase().startsWith(letter)
-            : null
-        );
-        setFilteredSongs(filtered)
+        const filtered = songArray.filter((song) =>{
+            if(letter === '#')
+            {
+                return mode === 'artist'
+                ? numberRegex.test(song.artist)
+                : mode === 'song'
+                ? numberRegex.test(song.songName)
+                : null
+            }
+           else
+           {
+                return mode === 'artist'
+                ? song.artist.toUpperCase().startsWith(letter)
+                : mode === 'song'
+                ? song.songName.toUpperCase().startsWith(letter)
+                : mode === 'showAll'
+           }
+        });
+
+         // Sort the filtered results alphabetically based on the current mode
+        const sorted = filtered.sort((a, b) => {
+            if (mode === 'artist') 
+            {
+                return a.artist.localeCompare(b.artist); // Sort by artist name
+            } 
+            else if (mode === 'song') 
+            {
+                return a.songName.localeCompare(b.songName); // Sort by song name
+            }
+            return 0;
+        });
+        setFilteredSongs(sorted);
     }
 
+    //By song or artist
     const handleModeChange = (newMode) => {
         setMode(newMode)
     }    
 
     const onShowAll = () => {
-        setFilteredSongs(songArray);
+        handleModeChange('showAll')
+        // Sort the filtered results alphabetically based on the current mode
+        const sorted = songArray.sort((a, b) => 
+        {
+            return a.songName.localeCompare(b.songName); // Sort by song name
+        });
+        setFilteredSongs(sorted);
     }
 
     const handleSearch = (searchTerm) => {
@@ -79,15 +131,12 @@ const Main = ({userId, userName}) => {
                     else
                     {
                         setSelectedSongs([...selectedSongs, selectedSong])
-                        console.log("Vote my song before adding my song: " + voteMySongCount)
                         setVoteMySongCount(voteMySongCount + 1)
                     }
                 }
                 else
                 {
                     setSelectedSongs([...selectedSongs, selectedSong])
-                
-                    console.log("You don't own this song so you are chill")
                 }
                 
             }
@@ -103,15 +152,12 @@ const Main = ({userId, userName}) => {
 
     const reOrderSelectedSongs = (updatedList) => { 
         setSelectedSongs(updatedList)
-        console.log(updatedList)
     };
   
     const removeSong = (selectedSong) => { 
-        console.log(selectedSong);
         const updatedList = selectedSongs.filter(song => song.trackId !== selectedSong.trackId)
         setSelectedSongs(updatedList)
         setVoteMySongCount(voteMySongCount - 1)
-        console.log(updatedList)
     };
     //End Select Songs
 

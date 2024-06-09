@@ -59,7 +59,7 @@ namespace PlaylistImporter.Services
                     {
                         isDuplicate = true;
                         playlistRows[j].PlaylistOwner = 
-                            new StringBuilder(currentPlaylistRow.PlaylistOwner + ", " + 
+                            new StringBuilder(currentPlaylistRow.PlaylistOwner + "," + 
                                                 playlistRows[j].PlaylistOwner).ToString();
 
                         break;

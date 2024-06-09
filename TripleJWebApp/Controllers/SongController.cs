@@ -19,7 +19,6 @@ namespace TripleJWebApp.Controllers
             _musicService = musicService;
         }
 
-
         [HttpGet]
         [Route(ActionRoutes.Empty)]
         [ProducesResponseType(typeof(List<Song>), 200)]
@@ -37,16 +36,32 @@ namespace TripleJWebApp.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Route(ActionRoutes.GetVotes)]
+        [ProducesResponseType(typeof(List<Song>), 200)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetVotedSongs(string UserId)
+        {
+            List<Song>? response;
+
+            response = await _musicService.GetUserVotedSongs(UserId);
+
+            if (response.Count <= 0 || response == null)
+            {
+                return NoContent();
+            }
+            return Ok(response);
+        }
 
         [HttpPost]
         [Route(ActionRoutes.VoteSongs)]
         [ProducesResponseType(typeof(List<Song>), 200)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SubmitVotes([Bind("trackId, songName, artist, trackImg")] List<Song> votes, string voter)
+        public async Task<IActionResult> SubmitVotes([Bind("trackId, songName, artist, trackImg")] List<Song> votes, string UserId)
         {
             if (ModelState.IsValid)
             {
-                var isSuccessful = await _musicService.SubmitVotes(votes, voter);
+                var isSuccessful = await _musicService.SubmitVotes(votes, UserId);
                 if (isSuccessful)
                 {
                     return Ok();

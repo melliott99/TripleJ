@@ -55,6 +55,82 @@ namespace PlaylistDataProcessor.Repository
             return response;
         }
 
+        private async Task<PlaylistRow> GetSong(string trackId)
+        {
+            PlaylistRow response = null;
+            try
+            {
+                SqlCommand command = new SqlCommand($"SELECT Song, Artist, Album, TrackId, TrackImg, PlaylistOwner From Songs where TrackId = @TrackId", _connection);
+                command.Parameters.AddWithValue("@TrackId", trackId);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    var row = new PlaylistRow();
+                    row.Song = (string)reader["Song"];
+                    row.Artist = (string)reader["Artist"];
+                    row.TrackId = (string)reader["TrackId"];
+                    row.TrackImg = (string)reader["TrackImg"];
+                    row.PlaylistOwner = (string)reader["PlaylistOwner"];
+                    response = row;
+                }
+                reader.Close();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return response;
+        }
+
+        public async Task<List<PlaylistRow>> GetUserVotedSongs(string userId)
+        {
+            List<Tuple<string, string>> votes = new List<Tuple<string, string>>();
+            List<PlaylistRow> response = new List<PlaylistRow>();
+            try
+            {
+                //Retrieve Votes
+                SqlCommand command = new SqlCommand($"SELECT TrackId, Voter from Votes where Voter = @UserId", _connection);
+                command.Parameters.AddWithValue("@UserId", userId);
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (reader.Read())
+                {
+                    var row = new Tuple<string, string>((string)reader["TrackId"], (string)reader["Voter"]);
+                    votes.Add(row);
+                }
+                reader.Close();
+               
+                //Retrieve Songs
+                foreach(var v in votes)
+                {
+                    response.Add(GetSong(v.Item1).Result);
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return response;
+        }
+
         public async Task<bool> SubmitVotes(List<VotingRow> votes)
         {
             bool isSuccessful = false;
@@ -73,6 +149,37 @@ namespace PlaylistDataProcessor.Repository
                     }
                 }
                 isSuccessful = true;
+            }
+            catch (DbException ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return isSuccessful;
+        }
+
+
+
+        public async Task<bool> UserSubmittedVotes(string userId)
+        {
+            bool isSuccessful = false;
+            try
+            {
+                string query = new StringBuilder($"INSERT INTO Users (HasVoted) " +
+                    $"VALUES (1) where UserId = @UserId").ToString();
+                using (SqlCommand command = new SqlCommand(query, _connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.ExecuteNonQuery();
+                }
             }
             catch (DbException ex)
             {
