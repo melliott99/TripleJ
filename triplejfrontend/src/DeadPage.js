@@ -1,7 +1,7 @@
 import logo from './logo.svg';
-import './App.css';
+import './DeadPage.css';
 
-function App() {
+function DeadPage() {
   return (
     <div className="App">
       <header className="App-header">
@@ -21,5 +21,5 @@ function App() {
     </div>
   );
 }
-// asdasdadsa
-export default App;
+//
+export {DeadPage};

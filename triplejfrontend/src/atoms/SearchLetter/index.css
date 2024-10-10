@@ -1,0 +1,16 @@
+.letter-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #3498db; /* Border color */
+    background-color: #3498db; /* Background color */
+    color: #fff; /* Text color */
+    border-radius: 4px; /* Border radius to make it slightly rounded */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for better user experience */
+  
+    /* Optional: Add hover styles */
+    &:hover {
+      background-color: #297fb8; /* Darker color on hover */
+      border-color: #297fb8; /* Darker border color on hover */
+    }
+  }

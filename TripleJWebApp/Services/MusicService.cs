@@ -1,0 +1,72 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Abstractions;
+using PlaylistDataProcessor.Models;
+using PlaylistDataProcessor.Repository;
+using System.Collections.Generic;
+using TripleJWebApp.Models;
+using TripleJWebApp.Services.Interfaces;
+
+namespace TripleJWebApp.Services
+{
+    public class MusicService : IMusicService
+    {
+        private readonly ILogger<MusicService> _logger;
+        private readonly DatabaseConnection _connection;
+        private readonly IMapper _mapper;
+
+        public MusicService(ILogger<MusicService> logger, IMapper mapper)
+        {
+            _logger = logger;
+            _mapper = mapper;
+            _connection = new DatabaseConnection();
+        }
+
+        public async Task<List<Song>> GetAllSongs(string UserId)
+        {
+            var result = await _connection.GetAllSongs();
+   
+            return _mapper.Map<List<PlaylistRow>, List<Song>>(result);
+            
+        }
+
+        public async Task<List<Song>> GetUserVotedSongs(string UserId)
+        {
+            var result = await _connection.GetUserVotedSongs(UserId);
+
+            return _mapper.Map<List<PlaylistRow>, List<Song>>(result);
+
+        }
+
+        public async Task<bool> SubmitVotes(List<Song> votes, string userId)
+        {
+            List<VotingRow> votingRows = _mapper.Map< List<Song>, List<VotingRow>>(votes);
+            AssignVoterAndPoints(votingRows, userId);
+            var result = await _connection.SubmitVotes(votingRows);
+            if(result)
+            {
+                result = await _connection.UserSubmittedVotes(userId);
+            }
+            return result;
+        }
+
+        public async Task<string> ValidateUser(string userId)
+        {
+            var result = await _connection.ValidateUser(userId);
+            return result;
+        }
+
+
+        private void AssignVoterAndPoints(List<VotingRow> votingRows, string userId)
+        {
+            int point = 10;
+            foreach(VotingRow v in votingRows)
+            {
+                v.Voter = userId;
+                v.Point = point;
+                point--;
+            }
+        }
+
+    }
+}

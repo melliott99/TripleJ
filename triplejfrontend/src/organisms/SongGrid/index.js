@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SongCard } from "molecules/SongCard"
+import './index.css'
 
 
-const SongGrid = () => {
-    const SongArray = props.songs;
-    const [songs, setSongs] = useState([]);
+const SongGrid = ({Songs, userId, onResult}) => {
 
-    useEffect(() => {
-        Api.getSongs().then((response) => 
-            response.json().then((data) => setSongs(data))
-        );
-    }, [])
 
-    const SongList = SongArray.map((song, i) => 
-        <SongCard song={song.title} artist={song.artist} Year={song.year} albumArt={song.albumArt} onAddButtonClick={() => handleAddButtonClick()} ></SongCard>
+
+    const SongList = Songs.map((song, i) => 
+        // const isOwner = song.playlistOwners.includes(userId);  
+        // console.log("isowner is: " + isOwner);
+        <SongCard 
+                key={i} 
+                trackId={song.trackId}
+                song={song.songName} 
+                artist={song.artist} 
+                trackImg={song.trackImg} 
+                playlistOwners={song.playlistOwners}
+                userId={userId}
+                onAddButtonClick={() => handleAddButtonClick(song)}
+            ></SongCard>
     );
 
+    const handleAddButtonClick = (song) => {
+        onResult(song)
+    };
+
+
     return (
-        <div>
+        <div className="song-grid">
             {SongList}
         </div>
     );
 
-    const handleAddButtonClick = () => {
-        console.log('add button')
-    }
 
 };
 

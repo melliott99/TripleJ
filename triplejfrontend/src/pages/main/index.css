@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+
+  }
+  
+  .main-container {
+    display: flex;
+    flex: 0.96;
+    justify-content: space-between;
+    padding: 20px;
+    overflow-y:auto;
+    position: relative; /* Add this to make sure the button is positioned relative to the container */
+
+  }
+  
+  .song-grid {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .selected-songs-container {
+    width: 25%;
+    padding: 20px;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  
+  .footer {
+    padding-top: 20px; /* Add some padding to the footer */
+  }
+
+  .red-button {
+    background-color: #e74c3c; /* Red background color */
+    color: #ffffff; /* White text color */
+    padding: 20px;
+    border: none;
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer;
+    width:24.6%;
+    position: absolute; /* Position the button absolutely within the main container */
+    bottom: 20px; /* Adjust this value to set the distance from the bottom */
+    right: 20px; /* Adjust this value to set the distance from the right */
+}
+
+.red-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}

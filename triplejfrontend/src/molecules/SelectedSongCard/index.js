@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 
-const SongCard = ({ trackId, song, artist, trackImg, playlistOwners, userId, onAddButtonClick }) => {
+const SelectedSongCard = ({ index, trackId, song, artist, trackImg, onAddButtonClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -13,13 +13,10 @@ const SongCard = ({ trackId, song, artist, trackImg, playlistOwners, userId, onA
     setIsHovered(false);
   };
 
-
-  const checkIsOwner = () => {
-    return playlistOwners.includes(userId)
-  };
-
   useEffect(() => {
+
   }, []);
+
 
   return (
     <div
@@ -27,27 +24,26 @@ const SongCard = ({ trackId, song, artist, trackImg, playlistOwners, userId, onA
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <p className='index'>{index + 1}</p>
       <img src={trackImg} alt={`${song} - ${artist}`} className="album-art" />
       <div className="song-info">
         <h3 className="song-title">{song}</h3>
         <p className="artist-name">{artist}</p>
-        {checkIsOwner() ? <p>You own this song</p> : <p></p>}
       </div>
-      <button onClick={onAddButtonClick} className="add-button">
-        +
+      <button onClick={onAddButtonClick} className="remove-button">
+        -
       </button>
     </div>
   );
 };
 
-SongCard.propTypes = {
+SelectedSongCard.propTypes = {
+  index: PropTypes.string.isRequired,
   trackId: PropTypes.string.isRequired,
   song: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   trackImg: PropTypes.string.isRequired,
-  playlistOwners: PropTypes.array.isRequired,
-  userId: PropTypes.string.isRequired,
   onAddButtonClick: PropTypes.func.isRequired,
 };
 
-export {SongCard};
+export {SelectedSongCard};
